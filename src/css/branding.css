@@ -1,0 +1,218 @@
+:root {
+    --light-grey: #FAFAFA;
+    --mid-grey: #ECECEC;
+    --dark-grey: #353d47;
+    --wellington-blue: #a6d6c9;
+    --wellington-orange: #f49712;
+    --wellington-gold: #f7d117;
+    --header-height: 60px;
+    --dropdown-width: 200px;
+    --sidebar-width-large: 250px;
+}
+
+/* Core Set Up */
+body {
+    background: var(--mid-grey);
+    font-family: 'Open Sans', sans-serif;
+    color: var(--dark-grey);
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 300;
+}
+
+h2 {
+    font-size: 25px;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Header */
+
+.header {
+    background: var(--light-grey);
+    position: fixed;
+    top: 0px;
+    left: 60px;
+    width: 100%;
+    height: var(--header-height);
+    z-index: 1000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    height: var(--header-height);
+    width: 80px;
+    transition: height 0s, width 0.35s linear; /* Top transition in */
+    cursor: pointer;
+}
+
+.dropdown span {
+    display: block;
+    position: absolute;
+    height: var(--header-height);
+    line-height: var(--header-height);
+    width: 100%;
+    text-align: center;
+}
+
+.dropdown span.short_name {
+    opacity: 1;
+    transition: 0.4s 0.15s;
+}
+
+.dropdown span.long_name {
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.dropdown_content a {
+    height: var(--header-height);
+    line-height: var(--header-height);
+    display: block;
+    width: auto;
+    text-align: center;
+    width: var(--dropdown-width);
+    margin: 0 10px;
+    font-size: 16px;
+    color: var(--dark-grey);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown_content a:hover {
+    color: var(--wellington-orange);
+}
+
+.dropdown_content {
+    background: var(--light-grey);
+    display: block;
+    position: fixed;
+    top: var(--header-height);
+    right: calc(var(--dropdown-width) * -1 - 20px);
+    width: calc(var(--dropdown-width) + 20px);
+    height: calc(var(--header-height) * 2);
+    transition: height 0s 0.55s, right 0.55s linear; /* Content transition in */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown:hover {
+    width: calc(var(--dropdown-width) + 20px);
+    height: calc(var(--header-height) * 3);
+    transition: height 0s, width 0.35s linear 0.2s; /* Top transition out */
+}
+
+.dropdown:hover .dropdown_content {
+    right: 0px;
+    transition: height 0s, right 0.55s linear; /* Content transition out */
+}
+
+.dropdown:hover span.short_name {
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.dropdown:hover span.long_name {
+    opacity: 1;
+    transition: 0.4s 0.15s;
+}
+
+/* Side Bar */
+
+.sidebar {
+    background: var(--dark-grey);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: var(--header-height);
+    height: 100%;
+    z-index: 1001;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.sidebar a {
+    text-decoration: none;
+    height: calc(var(--header-height) - 20px);
+    width: 100%;
+    padding: 10px 0;
+    display: inline-block;
+}
+
+.sidebar a h2 {
+    display: none;
+    float: left;
+    line-height: calc(var(--header-height) - 20px);
+    padding: 0;
+    margin: 0;
+    color: var(--light-grey);
+    width: calc(100% - 60px);
+    transition: 0.3s;
+}
+
+.sidebar a .sidebar_image {
+    width: calc(var(--header-height) - 20px);
+    height: calc(var(--header-height) - 20px);
+    display: inline-block;
+    float: left;
+    margin: 0 10px;
+    transition: 0.3s;
+    background-image: url('../branding/menu_grey.svg');
+    background-size: contain;
+}
+
+.sidebar a.active .sidebar_image {
+    background-image: url('../branding/menu_gold.svg');
+}
+
+.sidebar a.active h2 {
+    color: var(--wellington-gold);
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width-large);
+}
+
+.sidebar:hover a h2 {
+    display: inline-block;
+}
+
+.sidebar a:hover h2 {
+    color: var(--wellington-orange);
+}
+
+.sidebar a:hover .sidebar_image {
+    background-image: url('../branding/menu_orange.svg');
+}
+
+/* Main Content */
+
+.main_content{
+    width: calc(100% - 60px);
+    margin-left: 60px;
+    margin-top: 60px;
+    height: auto;
+    z-index: 1;
+    display: inline-block;
+    transition: margin-left .5s;
+}
