@@ -65,6 +65,7 @@ p {
     width: 80px;
     transition: height 0s, width 0.35s linear; /* Top transition in */
     cursor: pointer;
+    font-weight: 300;
 }
 
 .dropdown span {
@@ -74,11 +75,13 @@ p {
     line-height: var(--header-height);
     width: 100%;
     text-align: center;
+    font-size: 20px;
 }
 
 .dropdown span.short_name {
     opacity: 1;
     transition: 0.4s 0.15s;
+    font-size: 28px;
 }
 
 .dropdown span.long_name {
@@ -94,7 +97,7 @@ p {
     text-align: center;
     width: var(--dropdown-width);
     margin: 0 10px;
-    font-size: 16px;
+    font-size: 20px;
     color: var(--dark-grey);
     text-decoration: none;
     transition: 0.3s;
@@ -135,6 +138,10 @@ p {
 .dropdown:hover span.long_name {
     opacity: 1;
     transition: 0.4s 0.15s;
+}
+
+.phone_menu {
+    display: none;
 }
 
 /* Side Bar */
@@ -215,4 +222,93 @@ p {
     z-index: 1;
     display: inline-block;
     transition: margin-left .5s;
+}
+
+/* Tablets */
+@media only screen and (max-width: 768px) {
+
+}
+
+/* Phones */
+@media only screen and (max-width: 600px) {
+    .header {
+        left: 0px;
+    }
+
+    .phone_menu {
+        display: block;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: calc(var(--header-height) - 20px);
+        width: 40px;
+        margin: 10px 20px;
+        cursor: pointer;
+        background-image: url('../branding/menu_dark_grey.svg');
+        background-size: contain;
+        z-index: 1002;
+    }
+
+    .dropdown {
+        transition: none;
+    }
+
+    .dropdown_content {
+        display: none;
+        top: 60px;
+        left: 0px;
+        width: 100%;
+        height: auto;
+    }
+
+    .dropdown_content a {
+        width: 100%;
+        font-size: 26px;
+    }
+
+    .dropdown:hover {
+        width: 80px;
+        height: var(--header-height);
+        transition: none;
+    }
+
+    .dropdown:hover span.short_name {
+        opacity: 1;
+    }
+
+    .dropdown:hover span.long_name {
+        opacity: 0;
+    }
+
+    .dropdown:hover span {
+        color: var(--wellington-orange);
+    }
+
+    .dropdown:hover .dropdown_content {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+        top: 60px;
+        width: 100%;
+        height: auto;
+    }
+
+    .sidebar:hover {
+        width: 100%;
+    }
+
+    .sidebar .top, .sidebar a .sidebar_image {
+        display: none;
+    }
+
+    .sidebar a h2 {
+        display: inline-block;
+        text-align: center;
+    }
+
+    .phone_menu:hover .sidebar{
+        display: inline-block;
+    }
 }
