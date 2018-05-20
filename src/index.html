@@ -14,16 +14,17 @@
     <link rel="apple-touch-icon" sizes="180x180" href="branding/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="branding/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="branding/favicon-16x16.png" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/core.js"></script>
     <script src="js/index.js"></script>
 </head>
 <body>
     <div class="header">
-        <div class="phone_menu">
+        <div class="phone_menu" id="phone_menu" onclick="toggleSidebar()"></div>
         <div class="dropdown">
-            <span class="short_name">BW</span>
-            <span class="long_name">Ben White</span>
-            <div class="dropdown_content">
+            <span class="short_name" onclick="toggleDropdown()">BW</span>
+            <span class="long_name" onclick="toggleDropdown()">Ben White</span>
+            <div class="dropdown_content" id="dropdown_content">
                 <a href="#">Profile</a>
                 <a href="#">Logout</a>
             </div>
@@ -45,7 +46,7 @@
         </a>
         </div>
     </div>
-    <div class="main_content" id="main_content">
+    <div class="main_content" id="main_content" onclick="closeMenus()">
         <h1>Heading 1</h1>
         <h2>Heading 2</h2>
         <h3>Heading 3</h3>

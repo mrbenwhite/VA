@@ -8,6 +8,9 @@
     --header-height: 60px;
     --dropdown-width: 200px;
     --sidebar-width-large: 250px;
+    --header-button-width: 80px;
+    --sidebar-options: 4;
+    --dropdown-options: 3;
 }
 
 /* Core Set Up */
@@ -50,11 +53,12 @@ p {
     background: var(--light-grey);
     position: fixed;
     top: 0px;
-    left: 60px;
+    left: var(--header-height);
     width: 100%;
     height: var(--header-height);
     z-index: 1000;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    /*transition: background 0.5s;*/
 }
 
 .dropdown {
@@ -62,7 +66,7 @@ p {
     top: 0px;
     right: 0px;
     height: var(--header-height);
-    width: 80px;
+    width: var(--header-button-width);
     transition: height 0s, width 0.35s linear; /* Top transition in */
     cursor: pointer;
     font-weight: 300;
@@ -114,14 +118,14 @@ p {
     top: var(--header-height);
     right: calc(var(--dropdown-width) * -1 - 20px);
     width: calc(var(--dropdown-width) + 20px);
-    height: calc(var(--header-height) * 2);
+    height: calc(var(--header-height) * var(--dropdown-options));
     transition: height 0s 0.55s, right 0.55s linear; /* Content transition in */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .dropdown:hover {
     width: calc(var(--dropdown-width) + 20px);
-    height: calc(var(--header-height) * 3);
+    height: calc(var(--header-height) * (var(--dropdown-options) + 1));
     transition: height 0s, width 0.35s linear 0.2s; /* Top transition out */
 }
 
@@ -216,12 +220,12 @@ p {
 
 .main_content{
     width: calc(100% - 60px);
-    margin-left: 60px;
-    margin-top: 60px;
+    margin-left: var(--header-height);
+    margin-top: var(--header-height);
     height: auto;
     z-index: 1;
     display: inline-block;
-    transition: margin-left .5s;
+    transition: margin-left .5s, margin-top 0.5s;
 }
 
 /* Tablets */
@@ -233,6 +237,7 @@ p {
 @media only screen and (max-width: 600px) {
     .header {
         left: 0px;
+        transition: 0.5s;
     }
 
     .phone_menu {
@@ -241,7 +246,7 @@ p {
         top: 0px;
         left: 0px;
         height: calc(var(--header-height) - 20px);
-        width: 40px;
+        width: calc(var(--header-height) - 20px);
         margin: 10px 20px;
         cursor: pointer;
         background-image: url('../branding/menu_dark_grey.svg');
@@ -255,10 +260,10 @@ p {
 
     .dropdown_content {
         display: none;
-        top: 60px;
+        top: var(--header-height);
         left: 0px;
         width: 100%;
-        height: auto;
+        height: calc(var(--header-height) * var(--dropdown-options));
     }
 
     .dropdown_content a {
@@ -267,7 +272,7 @@ p {
     }
 
     .dropdown:hover {
-        width: 80px;
+        width: var(--header-button-width);
         height: var(--header-height);
         transition: none;
     }
@@ -280,19 +285,12 @@ p {
         opacity: 0;
     }
 
-    .dropdown:hover span {
-        color: var(--wellington-orange);
-    }
-
-    .dropdown:hover .dropdown_content {
-        display: block;
-    }
-
     .sidebar {
         display: none;
-        top: 60px;
+        top: var(--header-height);
         width: 100%;
-        height: auto;
+        height: calc(var(--header-height) * var(--sidebar-options));
+        transition: none;
     }
 
     .sidebar:hover {
@@ -306,9 +304,49 @@ p {
     .sidebar a h2 {
         display: inline-block;
         text-align: center;
+        width: 100%;
     }
 
-    .phone_menu:hover .sidebar{
-        display: inline-block;
+    .sidebar a:hover h2 {
+        color: var(--light-grey);
+    }
+
+    .sidebar a.active:hover h2 {
+        color: var(--wellington-gold);
+    }
+
+    .main_content{
+        width: 100%;
+        margin-left: 0px;
+    }
+
+    .main_content.sidebar_show {
+        margin-top: calc(var(--header-height) * (var(--sidebar-options) + 1));
+    }
+
+    .main_content.dropdown_show {
+        margin-top: calc(var(--header-height) * (var(--dropdown-options) + 1));
+    }
+
+    .header.sidebar_show {
+        background: var(--dark-grey);
+        box-shadow: none;
+    }
+
+    .header.dropdown_show {
+        background: var(--light-grey);
+        box-shadow: none;
+    }
+
+    .header.sidebar_show .phone_menu {
+        background-image: url('../branding/menu_orange.svg');
+    }
+
+    .header.sidebar_show .dropdown span {
+        color: var(--light-grey);
+    }
+
+    .header.dropdown_show .dropdown span {
+        color: var(--wellington-orange);
     }
 }
