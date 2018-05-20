@@ -1,6 +1,24 @@
+var mobile_screen = false;
+
 $(document).ready(function(){
     //document.documentElement.style.setProperty('--header-height', "100px");
 })
+
+$(window).resize(function() {
+    if($(window).width() <= 600) {
+        if (!mobile_screen) {
+            hideAllOnChange();
+        }
+        mobile_screen = true;
+    } else {
+        if (mobile_screen) {
+            hideAllOnChange();
+            $("#sidebar").css("display", "block");
+            $("#dropdown_content").css("display", "block");
+        }
+        mobile_screen = false;
+    }
+});
 
 function toggleDropdown() {
     if($(window).width() <= 600) {
@@ -37,6 +55,15 @@ function closeMenus() {
             hideSidebar();
         }
     }
+}
+
+function hideAllOnChange() {
+    $(".main_content").removeClass("dropdown_show");
+    $(".header").removeClass("dropdown_show");
+    $(".main_content").removeClass("sidebar_show");
+    $(".header").removeClass("sidebar_show");
+    $("#dropdown_content").css("display", "none");
+    $("#sidebar").css("display", "none");
 }
 
 function hideDropdown() {
