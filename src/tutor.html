@@ -14,10 +14,12 @@
     <link rel="icon" type="image/png" href="branding/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="branding/favicon-16x16.png" sizes="16x16">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
+    <script src="js/calculations.js"></script>
     <script src="js/core.js"></script>
     <!-- Page specific includes -->
-    <script src="js/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/tutor.css">
+    <script src="js/tutor.js"></script>
 </head>
 <body>
     <div class="header">
@@ -33,11 +35,11 @@
     </div>
     <div class="sidebar" id="sidebar">
         <a href="#" class="top"></a>
-        <a href="index.html" class="active">
+        <a href="index.html">
             <div class="sidebar_image"></div>
             <h2>Dashboard</h2>
         </a>
-        <a href="tutor.html">
+        <a href="tutor.html" class="active">
             <div class="sidebar_image"></div>
             <h2>Tutor</h2>
         </a>
@@ -49,6 +51,14 @@
     </div>
     <div class="main_content" id="main_content" onclick="closeMenus()">
         <!-- Enter content here -->
+        <div class="top_buttons"></div>
+        <div class="primary_section">
+            <div class="primary_section_title top"><h1>Murray - 5th Form</h1></div>
+            <div class="primary_section_buttons small" id="cycle_buttons"></div>
+            <div class="primary_section_main bottom">
+                <div class="primary_section_table" id="student_average_table"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

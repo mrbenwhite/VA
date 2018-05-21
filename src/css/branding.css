@@ -4,6 +4,7 @@
     --dark-grey: #353d47;
     --wellington-blue: #a6d6c9;
     --wellington-orange: #f49712;
+    --wellington-orange-trans: rgb(244, 151, 18, 0.6);
     --wellington-gold: #f7d117;
     --header-height: 60px;
     --dropdown-width: 200px;
@@ -11,6 +12,8 @@
     --header-button-width: 80px;
     --sidebar-options: 3;
     --dropdown-options: 2;
+    --fixed-cols: 3;
+    --fixed-col-width: 100px;
 }
 
 /* Core Set Up */
@@ -25,26 +28,36 @@ body {
 h1 {
     font-size: 30px;
     font-weight: 300;
+    margin: 0;
+    padding: 0;
 }
 
 h2 {
     font-size: 25px;
     font-weight: 300;
+    margin: 0;
+    padding: 0;
 }
 
 h3 {
     font-size: 20px;
     font-weight: 300;
+    margin: 0;
+    padding: 0;
 }
 
 h4 {
     font-size: 16px;
     font-weight: 300;
+    margin: 0;
+    padding: 0;
 }
 
 p {
     font-size: 14px;
     font-weight: 400;
+    margin: 0;
+    padding: 0;
 }
 
 /* Header */
@@ -350,4 +363,158 @@ p {
     .header.dropdown_show .dropdown span {
         color: var(--wellington-orange);
     }
+}
+
+/* Main content sections */
+.top_buttons {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 40px);
+    margin: 20px 20px 0 20px;
+    min-height: 50px;
+    background: transparent;
+}
+
+.primary_section {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 40px);
+    margin: 20px;
+    height: auto;
+    background: var(--light-grey);
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.primary_section_title{
+    display: inline-block;
+    float: left;
+    width: calc(100% - 20px);
+    margin: 5px 10px;
+    height: 40px;
+    user-select: none;
+}
+
+.primary_section_buttons {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 22px);
+    margin: 5px 10px;
+    border: 1px solid var(--wellington-blue);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.primary_section_buttons.small {
+    height: 25px;
+}
+
+.primary_section_buttons.large {
+    height: 40px;
+}
+
+.primary_section_button {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0 5px;
+    height: 100%;
+    line-height: 25px;
+    width: calc(20% - 10.8px);
+    border-right: 1px solid var(--wellington-blue);
+    user-select: none;
+    text-align: center;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.5s;
+}
+
+.primary_section_button.last {
+    border-right: none;
+}
+
+.primary_section_button:hover {
+    background: var(--mid-grey);
+}
+
+.primary_section_button.active {
+    background: var(--wellington-blue);
+    /*color: var(--light-grey);*/
+}
+
+.primary_section_main {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 22px);
+    margin: 5px 10px;
+    min-height: 100px;
+    border: 1px solid var(--wellington-blue);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.primary_section > .top {
+    margin-top: 15px;
+}
+
+.primary_section > .bottom {
+    margin-bottom: 15px;
+}
+
+.primary_section_table {
+    display: inline-block;
+    float: left;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.primary_section_table > .row {
+    display: inline-block;
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+.primary_section_table > .header_row {
+    background: var(--wellington-blue);
+    color: var(--dark-grey);
+}
+
+.primary_section_table > .content_row.even {
+    background: var(--light-grey);
+}
+
+.primary_section_table > .content_row.odd {
+    background: var(--mid-grey);
+}
+
+.primary_section_table > .content_row:hover {
+    background: var(--wellington-orange-trans);
+    cursor: pointer;
+}
+
+.primary_section_table > .row > .col {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    height: 35px;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.primary_section_table > .row > .col.left {
+    text-align: left;
+}
+
+.primary_section_table > .row > .fixed_col {
+    width: calc(var(--fixed-col-width) - 10px);
+}
+
+.primary_section_table > .row > .fill_col {
+    width: calc(100% - (var(--fixed-col-width) * var(--fixed-cols)) - 10px);
 }
