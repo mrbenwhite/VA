@@ -1,7 +1,15 @@
-.top_buttons {
+.top_buttons > .button:hover {
+    background-color: var(--wellington-orange);
+}
+
+.primary_section.tracker {
+    margin-top: 10px;
+}
+
+#student_tabs {
     display: none;
 }
 
-.primary_section {
-    
+#student_tabs > .primary_section_button {
+    width: calc(50% - 10.5px);
 }

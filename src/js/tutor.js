@@ -6,61 +6,217 @@ var baselines = "[{\"ID\":1,\"Name\":\"Jonah\",\"Surname\":\"Bates\",\"Subject\"
 
 /* Globals */
 var active_cycle;
-var students;
+var current_view;
+var active_student;
+
+//var students;
+var full_tutor_array;
+var page_title;
 
 $(document).ready(function(){
     baselines = JSON.parse(baselines);
     cycles = JSON.parse(cycles);
     reports = JSON.parse(reports);
-    students = getStudentsWithAvgBaselines(baselines);
-    var sorted_cycles = orderArrayByDate(cycles, "Date", "DD-MMM-YY", false);
-    writeCycleButtons(sorted_cycles);
-    writeStudentAverageTable(students, active_cycle);
+    full_tutor_array = generateFullTutorArray(reports, cycles, baselines);
+    //students = getStudentsWithAvgBaselines(baselines);
+    cycles = orderArrayByDate(cycles, "Date", "DD-MMM-YY", false);
+    page_title = "Murray 5th Form";
+    /* Set up view */
+    active_cycle = cycles[cycles.length - 1]["ID"];
+    current_view = "SUMMARY";
+    active_student = null;
+
+    /* setUpPage */
+    setUpPage();
 });
 
-function writeCycleButtons(sorted_cycles) {
+$(window).resize(function() {
+    adjustTrackerSize();
+});
+
+function setUpPage() {
+    hideAllViews();
+    switch(current_view) {
+        case "SUMMARY":
+        default:
+            showSummaryView();
+            $("#main_title").html("<h1>" + page_title + "</h1>");
+            writeCycleButtons();
+            /* TODO update */
+            writeStudentAverageTable();
+            break;
+        case "TRACKER":
+            showStudentTrackerView();
+            $("#main_title").html("<h1>" + getStudentName(active_student) + "</h1>");
+            setUpStudentButtons();
+            writeStudentTrackerOptions();
+            writeStudentTracker();
+            break;
+        case "SUBJECTS":
+            showStudentSubjectView();
+            $("#main_title").html("<h1>" + getStudentName(active_student) + "</h1>");
+            writeCycleButtons();
+            setUpStudentButtons();
+            writeStudentSubjectsTable();
+            break;
+    }
+}
+
+/* Show/hide all views */
+
+function hideAllViews() {
+    $("#cycle_buttons").css("display", "none");
+    $("#student_average_table").css("display", "none");
+    $("#student_tracker").css("display", "none");
+    $("#student_tabs").css("display", "none");
+    $("#student_subjects_table").css("display", "none");
+    $("#top_buttons").css("display", "none");
+}
+
+function showSummaryView() {
+    $("#cycle_buttons").css("display", "inline-block");
+    $("#student_average_table").css("display", "inline-block");
+    $(".primary_section").removeClass("orange");
+    $(".primary_section").removeClass("tracker");
+}
+
+function showStudentTrackerView() {
+    $("#student_tracker").css("display", "inline-block");
+    $("#student_tabs").css("display", "inline-block");
+    $(".primary_section").addClass("orange");
+    $(".primary_section").addClass("tracker");
+    $("#top_buttons").css("display", "inline-block");
+    $("#student_tracker_button").addClass("active");
+    $("#student_subjects_button").removeClass("active");
+}
+
+function showStudentSubjectView() {
+    $("#student_tabs").css("display", "inline-block");
+    $("#cycle_buttons").css("display", "inline-block");
+    $("#student_subjects_table").css("display", "inline-block");
+    $(".primary_section").addClass("orange");
+    $(".primary_section").addClass("tracker");
+    $("#top_buttons").css("display", "inline-block");
+    $("#student_tracker_button").removeClass("active");
+    $("#student_subjects_button").addClass("active");
+}
+
+
+function clickStudentTrackerButton() {
+    current_view = "TRACKER";
+    setUpPage();
+}
+
+function clickStudentSubjectsButton() {
+    current_view = "SUBJECTS";
+    setUpPage();
+}
+
+function changeStudent(student) {
+    active_student = student;
+    setUpPage();
+}
+
+function backToSummary() {
+    current_view = "SUMMARY";
+    setUpPage();
+}
+
+function writeCycleButtons() {
     var html_text = "";
-    active_cycle = sorted_cycles[sorted_cycles.length - 1]["ID"];
-    for (var i = 0; i < sorted_cycles.length; i++) {
-        var title = sorted_cycles[i]["Name"];
-        var id = sorted_cycles[i]["ID"];
+    for (var i = 0; i < cycles.length; i++) {
+        var title = cycles[i]["Name"];
+        var id = cycles[i]["ID"];
         var class_text = "primary_section_button";
         if (id === active_cycle) class_text += " active";
-        if (i === sorted_cycles.length - 1) class_text += " last";
+        if (i === cycles.length - 1) class_text += " last";
         html_text += "<div class='" + class_text + "' id='cycle_button_" + id + "' onclick='clickCycleButton(" + id + ")'><h4>" + title + "</h4></div>";
     }
     $("#cycle_buttons").html(html_text);
 }
 
-function writeStudentAverageTable(students, cycle) {
+function writeStudentAverageTable(students) {
     /* Order by surname */
-    students = orderArrayBy(students, "Surname", false);
+    full_tutor_array = orderArrayBy(full_tutor_array, "Surname", false);
     /* Header row */
     var html_text = "<div class='header_row row'><div class='fill_col col left'><h3>Student</h3></div>";
     html_text += "<div class='fixed_col col'><h3>Baseline</h3></div><div class='fixed_col col'><h3>Grade</h3></div>";
     html_text += "<div class='fixed_col col'><h3>VA</h3></div></div>";
-    for (var i = 0; i < students.length; i++) {
-        var id = students[i]["ID"];
-        var name = students[i]["Name"] + " " + students[i]["Surname"];
-        var baseline = students[i]["Baseline"];
-        var result = getStudentAvgForCycle(reports, id, cycle, baselines);
-        baseline = precisionRound(baseline, 1);
-        grade = result[0] !== "-" ? precisionRound(result[0], 1) : "-";
+    for (var i = 0; i < full_tutor_array.length; i++) {
+        var id = full_tutor_array[i]["ID"];
+        var name = full_tutor_array[i]["Name"] + " " + full_tutor_array[i]["Surname"];
+        var baseline = full_tutor_array[i]["AvBaseline"];
+        baseline = isNaN(parseFloat(baseline)) ? "-" : precisionRound(baseline, 1);
+        var student_cycles = full_tutor_array[i]["Cycles"];
+        var student_cycle = false;
+        var grade = "-";
         var va = "-";
+        for (var j = 0; j < student_cycles.length; j++) {
+            if (student_cycles[j]["ID"] === active_cycle) {
+                student_cycle = student_cycles[j];
+                break;
+            }
+        }
+        if (student_cycle) {
+            grade = student_cycle["AvGrade"];
+            va = student_cycle["AvVA"];
+            grade = isNaN(parseFloat(grade)) ? "-" : precisionRound(grade, 1);
+            va = isNaN(parseFloat(va)) ? "-" : precisionRound(va, 1);
+        }
         var col_text = "var(--dark-grey)";
-        if (result[1] !== "-") {
-            va = precisionRound(result[1], 1);
+        if (va !== "-") {
             var colour = getColourForValue(va, 1.0, 0.1, -0.6, [60, 250, 0], [247, 153, 2], [210, 0, 0]);
             col_text = "rgb(" + colour[0] + ", " + colour[1] + ", " + colour[2] + ")";
         }
-        /* Student Row */
         html_text += "<div class='content_row row ";
         html_text += i % 2 === 0 ? "even" : "odd";
-        html_text += "'><div class='fill_col col left'><h4>" + name + "</h4></div>";
+        html_text += "' onclick='clickStudent(" + id + ")'><div class='fill_col col left'><h4>" + name + "</h4></div>";
         html_text += "<div class='fixed_col col'><h3>" + baseline + "</h3></div><div class='fixed_col col'><h3>" + grade + "</h3></div>";
         html_text += "<div class='fixed_col col' style='color:" + col_text + "'><h3>" + va + "</h3></div></div>";
     }
     $("#student_average_table").html(html_text);
+}
+
+function writeStudentSubjectsTable() {
+    for (var i = 0; i < full_tutor_array.length; i++) {
+        if (full_tutor_array[i]["ID"] === active_student) {
+            var student_cycles = full_tutor_array[i]["Cycles"];
+            for (var j = 0; j < student_cycles.length; j++) {
+                if (student_cycles[j]["ID"] === active_cycle) {
+                    var student_cycle = student_cycles[j];
+                    break;
+                }
+            }
+            break;
+        }
+    }
+    var subjects_array = student_cycle["Subjects"];
+    var html_text = "<div class='header_row row'><div class='fill_col col left'><h3>Subject</h3></div>";
+    html_text += "<div class='fixed_col col'><h3>Baseline</h3></div><div class='fixed_col col'><h3>Grade</h3></div>";
+    html_text += "<div class='fixed_col col'><h3>VA</h3></div></div>";
+    var i = 0;
+    for (var key in subjects_array) {
+        var subject_name = key;
+        var baseline = subjects_array[key]["Baseline"];
+        baseline = isNaN(parseFloat(baseline)) ? "-" : baseline;
+        var grade = subjects_array[key]["Grade"];
+        var va = subjects_array[key]["VA"];
+        var col_text = "var(--dark-grey)";
+        if (!isNaN(parseFloat(va))) {
+            va = precisionRound(va, 1);
+            var colour = getColourForValue(va, 1.0, 0.1, -0.6, [60, 250, 0], [247, 153, 2], [210, 0, 0]);
+            col_text = "rgb(" + colour[0] + ", " + colour[1] + ", " + colour[2] + ")";
+        } else {
+            va = "-";
+        }
+        html_text += "<div class='content_row row ";
+        html_text += i % 2 === 0 ? "even" : "odd";
+        html_text += "'><div class='fill_col col left'><h4>" + subject_name + "</h4></div>";
+        html_text += "<div class='fixed_col col'><h3>" + baseline + "</h3></div><div class='fixed_col col'><h3>" + grade + "</h3></div>";
+        html_text += "<div class='fixed_col col' style='color:" + col_text + "'><h3>" + va + "</h3></div></div>";
+        i++;
+    }
+    $("#student_subjects_table").html(html_text);
 }
 
 function updateActiveCycleButton() {
@@ -78,7 +234,195 @@ function updateActiveCycleButton() {
 function clickCycleButton(cycle) {
     if (cycle !== active_cycle) {
         active_cycle = cycle;
-        writeStudentAverageTable(students, cycle);
-        updateActiveCycleButton();
+        setUpPage();
     }
+}
+
+function clickStudent(student) {
+    current_view = "TRACKER";
+    active_student = student;
+    setUpPage();
+}
+
+function getStudentName(student) {
+    for (var j = 0; j < full_tutor_array.length; j++) {
+        if (full_tutor_array[j]["ID"] === student) {
+            return full_tutor_array[j]["Name"] + " " + full_tutor_array[j]["Surname"];
+        }
+    }
+    return "-";
+}
+
+function adjustTrackerSize() {
+    var offset = $("#student_tracker_div").offset();
+    var available_height = $(window).height() - offset["top"] - 60;
+    var height = Math.min(Math.max(available_height, 400),800);
+    var options_height = height + "px";
+
+    var available_width = $("#student_tracker").width();
+    var options_width = 200;
+    var width = available_width - options_width - 70;
+
+    var options_margin_left = 0;
+    var options_margin_top = 10;
+
+    if (width < 600) {
+        /* 2 level */
+        width = available_width - 40;
+        options_width = available_width - 40;
+        options_margin_left = 10;
+        options_margin_top = 0;
+        options_height = "auto";
+    } else if (width >= 700 && width < 800) {
+        options_width = 250;
+        width = available_width - options_width - 70;
+    } else if (width >= 800 && width < 1000) {
+        options_width = 300;
+        width = available_width - options_width - 70;
+    } else if (width >= 1000){
+        width = 1000;
+        options_width = available_width - width - 70;
+    }
+
+    $("#student_tracker_div").css("width", width + "px");
+    $("#student_tracker_div").css("height", height + "px");
+    $("#student_tracker_options").css("height", options_height);
+    $("#student_tracker_options").css("width", options_width + "px");
+    $("#student_tracker_options").css("margin-left", options_margin_left + "px");
+    $("#student_tracker_options").css("margin-top", options_margin_top + "px");
+}
+
+function setUpStudentButtons() {
+    /* Back button */
+    var html_text = "<div class='button left' onclick='backToSummary()'><div class='button_logo'></div><span><h4>" + page_title + "</h4></span></div>";
+    for (var i = 0; i < full_tutor_array.length; i++) {
+        if (full_tutor_array[i]["ID"] === active_student) {
+            var prev_student_array_val = i - 1;
+            var next_student_array_val = i + 1;
+            if (i === 0) {
+                prev_student_array_val = full_tutor_array.length - 1;
+            }
+            if (i === full_tutor_array.length - 1) {
+                next_student_array_val = 0;
+            }
+            break;
+        }
+    }
+    /* Next student buttons */
+    var next_student_id = full_tutor_array[next_student_array_val]["ID"];
+    var next_student_name = full_tutor_array[next_student_array_val]["Name"] + " " + full_tutor_array[next_student_array_val]["Surname"];
+    var prev_student_id = full_tutor_array[prev_student_array_val]["ID"];
+    var prev_student_name = full_tutor_array[prev_student_array_val]["Name"] + " " + full_tutor_array[prev_student_array_val]["Surname"];
+    html_text += "<div class='button right double_right' onclick='changeStudent(" + next_student_id + ")'><span><h4>" + next_student_name + "</h4></span><div class='button_logo right'></div></div>";
+    html_text += "<div class='button right double' onclick='changeStudent(" + prev_student_id + ")'><div class='button_logo'></div><span><h4>" + prev_student_name + "</h4></span></div>";
+    $("#top_buttons").html(html_text);
+    /* Tracker and subjects buttons */
+    html_text = "<div class='primary_section_button' id='student_tracker_button' onclick='clickStudentTrackerButton()'><h3>Tracker</h3></div>";
+    html_text += "<div class='primary_section_button last' id='student_subjects_button' onclick='clickStudentSubjectsButton()'><h3>Subjects</h3></div>";
+    $("#student_tabs").html(html_text);
+    if (current_view === "TRACKER") {
+        $("#student_tracker_button").addClass("active");
+        $("#student_subjects_button").removeClass("active");
+    } else {
+        $("#student_tracker_button").removeClass("active");
+        $("#student_subjects_button").addClass("active");
+    }
+}
+
+function writeStudentTrackerOptions() {
+    var html_text = "";
+    var options = [["Tracker", true], ["Target VA", false], ["Year Avg", false]];
+    for (var i = 0; i < options.length; i++) {
+        var name = options[i][0];
+        var display = options[i][1];
+        html_text += "<div class='primary_section_chart_option'>";
+        html_text += "<input type='checkbox' class='primary_section_chart_option_check'";
+        if (display) html_text += " checked='checked'";
+        html_text += "'><span class='checkmark'></span><span><h3>" + name + "</h3></span></div>";
+    }
+    $("#student_tracker_options").html(html_text);
+}
+function writeStudentTracker() {
+    $("#student_tracker_div").html("<canvas id='student_tracker_canvas'></canvas></div>");
+
+    adjustTrackerSize();
+
+    var labels = [];
+    var va_data = [];
+    var target_data = [];
+    var max_val = -1000;
+    var min_val = 1000;
+    for (var i = 0; i < cycles.length; i++) {
+        labels.push(cycles[i]["Name"]);
+        var cycle_id = cycles[i]["ID"];
+        for (var j = 0; j < full_tutor_array.length; j++) {
+            if (full_tutor_array[j]["ID"] === active_student) {
+                var student_cycles = full_tutor_array[j]["Cycles"];
+                var va = false;
+                for (var k = 0; k < student_cycles.length; k++) {
+                    if (student_cycles[k]["ID"] === cycle_id) {
+                        va = precisionRound(student_cycles[k]["AvVA"],2);
+                        max_val = Math.max(max_val, va);
+                        min_val = Math.min(min_val, va);
+                        break;
+                    }
+                }
+                va_data.push(va ? va : "");
+                max_val = Math.max(max_val, 0.6);
+                min_val = Math.min(min_val, 0.6);
+                target_data.push(0.6);
+                break;
+            }
+        }
+    }
+    max_val = precisionRound(max_val + 0.2, 1);
+    min_val = precisionRound(min_val - 0.2, 1);
+    new Chart(document.getElementById("student_tracker_canvas"), {
+        type: 'line',
+        data: {
+        labels: labels,
+        datasets: [{
+            data: va_data,
+            label: "VA",
+            borderColor: "#f49712",
+            fill: false,
+            lineTension: 0
+          }]
+        },
+        options: {
+            responsive:true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+            scales: {
+                xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Reporting Cycle'
+                        }
+                    }],
+                yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'VA'
+                        },
+                        ticks: {
+                            min: min_val,
+                            max: max_val
+                        }
+                    }]
+            },
+            layout: {
+                padding: {
+                    left: 50,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            }
+        }
+    });
 }

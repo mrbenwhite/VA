@@ -3,8 +3,9 @@
     --mid-grey: #ECECEC;
     --dark-grey: #353d47;
     --wellington-blue: #a6d6c9;
+    --wellington-blue-trans: rgba(166, 214, 201,0.6);
     --wellington-orange: #f49712;
-    --wellington-orange-trans: rgb(244, 151, 18, 0.6);
+    --wellington-orange-trans: rgba(244, 151, 18, 0.6);
     --wellington-gold: #f7d117;
     --header-height: 60px;
     --dropdown-width: 200px;
@@ -14,6 +15,7 @@
     --dropdown-options: 2;
     --fixed-cols: 3;
     --fixed-col-width: 100px;
+    --chart-options-row-height: 40px;
 }
 
 /* Core Set Up */
@@ -370,10 +372,64 @@ p {
     display: inline-block;
     float: left;
     width: calc(100% - 40px);
-    margin: 20px 20px 0 20px;
-    min-height: 50px;
+    margin: 10px 20px 0 20px;
+    height: 30px;
     background: transparent;
 }
+
+.top_buttons > .button {
+    display: inline-block;
+    float: left;
+    width: auto;
+    min-width: 50px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background: var(--light-grey);
+    border-radius: 2px;
+    overflow: hidden;
+    user-select: none;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.top_buttons > .button:hover {
+    background-color: var(--wellington-blue);
+}
+
+.top_buttons > .button.right {
+    float: right;
+}
+
+.top_buttons > .button.double {
+    border-radius: 2px 0 0 2px;
+}
+
+.top_buttons > .button.double_right {
+    border-radius: 0 2px 2px 0;
+    border-left: 1px solid var(--dark-grey);
+}
+
+.top_buttons > .button > .button_logo {
+    display: inline-block;
+    float: left;
+    height: 18px;
+    width: 18px;
+    margin: 6px;
+    background-image: url('../branding/back_arrow_grey.svg');
+    background-size: contain;
+}
+
+.top_buttons > .button > .button_logo.right {
+    transform: scaleX(-1);
+}
+
+.top_buttons > .button > span{
+    display: inline-block;
+    float: left;
+    height: 30px;
+}
+
 
 .primary_section {
     display: inline-block;
@@ -405,12 +461,18 @@ p {
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.primary_section.orange > .primary_section_buttons {
+    border: 1px solid var(--wellington-orange);
+}
+
 .primary_section_buttons.small {
     height: 25px;
+    line-height: 25px;
 }
 
 .primary_section_buttons.large {
-    height: 40px;
+    height: 35px;
+    line-height: 35px;
 }
 
 .primary_section_button {
@@ -419,7 +481,6 @@ p {
     margin: 0;
     padding: 0 5px;
     height: 100%;
-    line-height: 25px;
     width: calc(20% - 10.8px);
     border-right: 1px solid var(--wellington-blue);
     user-select: none;
@@ -429,8 +490,16 @@ p {
     transition: 0.5s;
 }
 
-.primary_section_button.last {
+.primary_section_button.last, .primary_section.orange > .primary_section_buttons > .primary_section_button.last {
     border-right: none;
+}
+
+.primary_section.orange > .primary_section_buttons > .primary_section_button {
+    border-right: 1px solid var(--wellington-orange);
+}
+
+.primary_section.orange > .primary_section_buttons > .primary_section_button.active {
+    background: var(--wellington-orange);
 }
 
 .primary_section_button:hover {
@@ -439,7 +508,6 @@ p {
 
 .primary_section_button.active {
     background: var(--wellington-blue);
-    /*color: var(--light-grey);*/
 }
 
 .primary_section_main {
@@ -454,6 +522,10 @@ p {
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.primary_section.orange > .primary_section_main {
+    border: 1px solid var(--wellington-orange);
+}
+
 .primary_section > .top {
     margin-top: 15px;
 }
@@ -462,7 +534,7 @@ p {
     margin-bottom: 15px;
 }
 
-.primary_section_table {
+.primary_section_table, .primary_section_chart {
     display: inline-block;
     float: left;
     width: 100%;
@@ -485,6 +557,10 @@ p {
     color: var(--dark-grey);
 }
 
+.primary_section.orange > .primary_section_main > .primary_section_table > .header_row {
+    background: var(--wellington-orange);
+}
+
 .primary_section_table > .content_row.even {
     background: var(--light-grey);
 }
@@ -494,8 +570,12 @@ p {
 }
 
 .primary_section_table > .content_row:hover {
-    background: var(--wellington-orange-trans);
+    background: var(--wellington-blue-trans);
     cursor: pointer;
+}
+
+.primary_section.orange > .primary_section_main > .primary_section_table > .content_row:hover {
+    background: var(--wellington-orange-trans);
 }
 
 .primary_section_table > .row > .col {
@@ -517,4 +597,107 @@ p {
 
 .primary_section_table > .row > .fill_col {
     width: calc(100% - (var(--fixed-col-width) * var(--fixed-cols)) - 10px);
+}
+
+.primary_section_chart_chart {
+    display: inline-block;
+    float: left;
+    min-width: 200px;
+    min-height: 200px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.primary_section_chart_chart > canvas {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.primary_section_chart_options {
+    display: inline-block;
+    float: left;
+    min-width: 200px;
+    min-height: 100px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.primary_section_chart_option {
+    display: inline-block;
+    float: left;
+    width: 100%;
+    padding: 0;
+    height: var(--chart-options-row-height);
+    line-height: var(--chart-options-row-height);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.primary_section_chart_option > span {
+    user-select: none;
+}
+
+.primary_section_chart_option_check {
+    display: inline-block;
+    float: left;
+    width: var(--chart-options-row-height);
+    height: var(--chart-options-row-height);
+    margin-right: 5px;
+}
+
+/* Hide the browser's default checkbox */
+input.primary_section_chart_option_check {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.primary_section_chart_option > .checkmark {
+  display: inline-block;
+  float: left;
+  height: calc(var(--chart-options-row-height) - 16px);
+  width: calc(var(--chart-options-row-height) - 16px);
+  background-color: var(--mid-grey);
+  border-radius:3px;
+  margin: 8px;
+}
+
+/* On mouse-over, add a grey background color */
+input.primary_section_chart_option_check:hover ~ .checkmark {
+  background-color: var(--wellington-orange-trans);
+}
+
+/* When the checkbox is checked, add a blue background */
+input.primary_section_chart_option_check:checked ~ .checkmark {
+  background-color: var(--wellington-orange);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.primary_section_chart_option > .checkmark:after {
+  content: "";
+  position: relative;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+input.primary_section_chart_option_check:checked ~ .checkmark:after {
+  display: inline-block;
+}
+
+/* Style the checkmark/indicator */
+.primary_section_chart_option > .checkmark:after {
+  left: 9px;
+  top: -9px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
