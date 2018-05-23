@@ -377,7 +377,7 @@ function writeStudentTracker() {
     }
     max_val = precisionRound(max_val + 0.2, 1);
     min_val = precisionRound(min_val - 0.2, 1);
-    new Chart(document.getElementById("student_tracker_canvas"), {
+    var chart = new Chart(document.getElementById("student_tracker_canvas"), {
         type: 'line',
         data: {
         labels: labels,
@@ -425,4 +425,7 @@ function writeStudentTracker() {
             }
         }
     });
+
+    adjustTrackerSize();
+    chart.render();
 }
