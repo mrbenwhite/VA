@@ -4,6 +4,7 @@
 
 
 .top_buttons > .button:hover {
+    background-color: #f49712;
     background-color: var(--wellington-orange);
 }
 
