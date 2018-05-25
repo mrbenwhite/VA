@@ -96,8 +96,13 @@ function showSidebar() {
 function orderArrayBy(array, key, desc) {
     array.sort(function(a, b) {
         var x = a[key]; var y = b[key];
-        if (typeof x == "string") x = (""+x).toLowerCase();
-        if (typeof y == "string") y = (""+y).toLowerCase();
+        if (typeof x == "string" && typeof y == "string") {
+            x = (""+x).toLowerCase();
+            y = (""+y).toLowerCase();
+        } else if (typeof x == "string" || typeof y == "string") {
+            if (typeof x == "string") x = -1000;
+            if (typeof y == "string") y = -1000;
+        }
         return desc ? ((x < y) ? 1 : ((x > y) ? -1 : 0)) : ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
     return array;

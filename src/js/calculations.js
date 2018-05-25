@@ -134,6 +134,7 @@ function generateFullTutorArray(reports, cycles, baselines) {
             if (final_array[j]["ID"] === student_id) {
                 var student_cycles = final_array[j]["Cycles"];
                 var baseline = parseFloat(final_array[j]["Baselines"][subject]);
+                if (isNaN(baseline)) baseline = "-";
                 var new_cycle = true;
                 for (var k = 0; k < student_cycles.length; k++) {
                     if (student_cycles[k]["ID"] === cycle_id) {
@@ -152,7 +153,7 @@ function generateFullTutorArray(reports, cycles, baselines) {
                             student_cycles[k]["AvVA"] = avg_va;
                             student_cycles[k]["AvVACount"] = avg_va_count + 1;
                         }
-                        student_cycles[k]["Subjects"][subject] = {"Baseline": baseline, "Grade": grade, "GradeVal": grade_val, "VA": va};
+                        student_cycles[k]["Subjects"].push({"Baseline": baseline, "Grade": grade, "GradeVal": grade_val, "VA": va, "Subject": subject});
                         new_cycle = false;
                         break;
                     }
@@ -172,8 +173,8 @@ function generateFullTutorArray(reports, cycles, baselines) {
                         new_cycle_array["AvVA"] = 0;
                         new_cycle_array["AvVACount"] = 0;
                     }
-                    new_cycle_array["Subjects"] = {};
-                    new_cycle_array["Subjects"][subject] = {"Baseline": baseline, "Grade": grade, "GradeVal": grade_val, "VA": va};
+                    new_cycle_array["Subjects"] = [];
+                    new_cycle_array["Subjects"].push({"Baseline": baseline, "Grade": grade, "GradeVal": grade_val, "VA": va, "Subject": subject});
                     final_array[j]["Cycles"].push(new_cycle_array);
                 }
                 break;

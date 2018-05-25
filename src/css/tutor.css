@@ -1,3 +1,8 @@
+:root {
+    --fixed-col-width: 110px;
+}
+
+
 .top_buttons > .button:hover {
     background-color: var(--wellington-orange);
 }

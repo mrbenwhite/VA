@@ -550,6 +550,8 @@ p {
     line-height: 35px;
     width: 100%;
     transition: 0.5s;
+    user-select: none;
+    cursor: pointer;
 }
 
 .primary_section_table > .header_row {
@@ -649,12 +651,12 @@ p {
     margin-right: 5px;
 }
 
-/* Hide the browser's default checkbox */
+/* Hide the browser's default checkbox
 input.primary_section_chart_option_check {
   position: absolute;
   opacity: 0;
   cursor: pointer;
-}
+}*/
 
 /* Create a custom checkbox */
 .primary_section_chart_option > .checkmark {
@@ -668,12 +670,12 @@ input.primary_section_chart_option_check {
 }
 
 /* On mouse-over, add a grey background color */
-input.primary_section_chart_option_check:hover ~ .checkmark {
+.primary_section_chart_option:hover > .checkmark {
   background-color: var(--wellington-orange-trans);
 }
 
 /* When the checkbox is checked, add a blue background */
-input.primary_section_chart_option_check:checked ~ .checkmark {
+.primary_section_chart_option > .checkmark.checked {
   background-color: var(--wellington-orange);
 }
 
@@ -685,7 +687,7 @@ input.primary_section_chart_option_check:checked ~ .checkmark {
 }
 
 /* Show the checkmark when checked */
-input.primary_section_chart_option_check:checked ~ .checkmark:after {
+.primary_section_chart_option > .checkmark.checked:after {
   display: inline-block;
 }
 
