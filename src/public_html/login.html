@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Reports Tracker</title>
+    <title>Reports Tracker - Login</title>
     <meta name="description" content="Reporting and VA analysis">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -16,24 +16,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/core.js"></script>
     <!-- Page specific includes -->
-    <script src="js/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
-    <div class="header">
-        <div class="phone_menu" id="phone_menu" onclick="toggleSidebar()"></div>
-        <div class="dropdown">
-            <span id="short_name" class="short_name" onclick="toggleDropdown()"></span>
-            <span id="long_name" class="long_name" onclick="toggleDropdown()"></span>
-            <div class="dropdown_content" id="dropdown_content">
-                <a href="#">Profile</a>
-                <a href="#" onclick="clickLogOut()">Logout</a>
+    <div class="main_content" id="main_content">
+        <div id="login_box">
+            <div id="login_box_detail"></div>
+            <div id="login_box_main">
+                <select id="login_box_select"></select>
             </div>
+            <div id="login_box_button" onclick="clickLogin()"><h3>Login</h3></div>
         </div>
-    </div>
-    <div class="sidebar" id="sidebar"></div>
-    <div class="main_content" id="main_content" onclick="closeMenus()">
-        <!-- Enter content here -->
     </div>
 </body>
 </html>

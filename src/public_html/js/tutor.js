@@ -8,6 +8,9 @@ var target_va = "0.6";
 var yeargroup_average = "[{\"Cycle\":1,\"VA\":0.32},{\"Cycle\":2,\"VA\":0.41},{\"Cycle\":3,\"VA\":0.38},{\"Cycle\":4,\"VA\":0.45},{\"Cycle\":5,\"VA\":0.52}]";
 
 /* Globals */
+var session_user;
+var teacher;
+
 var active_cycle;
 var current_view;
 var active_student;
@@ -20,12 +23,16 @@ var tracker_chart;
 var tracker_options;
 
 $(document).ready(function(){
+    if(!checkLoggedInUser()) window.location = "login.html";
+    session_user = JSON.parse(sessionStorage.getItem("user"));
+    teacher = session_user["UserObject"];
+    initPage();
+
     baselines = JSON.parse(baselines);
     cycles = JSON.parse(cycles);
     reports = JSON.parse(reports);
     yeargroup_average = JSON.parse(yeargroup_average);
     full_tutor_array = generateFullTutorArray(reports, cycles, baselines);
-    //students = getStudentsWithAvgBaselines(baselines);
     cycles = orderArrayByDate(cycles, "Date", "DD-MMM-YY", false);
     page_title = "Murray 5th Form";
     student_average_order = ["Surname", false];

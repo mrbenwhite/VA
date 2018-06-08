@@ -26,29 +26,15 @@
     <div class="header">
         <div class="phone_menu" id="phone_menu" onclick="toggleSidebar()"></div>
         <div class="dropdown">
-            <span class="short_name" onclick="toggleDropdown()">BW</span>
-            <span class="long_name" onclick="toggleDropdown()">Ben White</span>
+            <span id="short_name" class="short_name" onclick="toggleDropdown()"></span>
+            <span id="long_name" class="long_name" onclick="toggleDropdown()"></span>
             <div class="dropdown_content" id="dropdown_content">
                 <a href="#">Profile</a>
-                <a href="#">Logout</a>
+                <a href="#" onclick="clickLogOut()">Logout</a>
             </div>
         </div>
     </div>
-    <div class="sidebar" id="sidebar">
-        <a href="#" class="top"></a>
-        <a href="index.html">
-            <div class="sidebar_image"></div>
-            <h2>Dashboard</h2>
-        </a>
-        <a href="tutor.html" class="active">
-            <div class="sidebar_image"></div>
-            <h2>Tutor</h2>
-        </a>
-        <a href="#">
-            <div class="sidebar_image"></div>
-            <h2>Teacher</h2>
-        </a>
-    </div>
+    <div class="sidebar" id="sidebar"></div>
     <div class="main_content" id="main_content" onclick="closeMenus()">
         <!-- Enter content here -->
         <div class="top_buttons" id="top_buttons"></div>

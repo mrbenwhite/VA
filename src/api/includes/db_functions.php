@@ -1,6 +1,7 @@
 <?php
 
-include_once ('db_connect.php');
+$include_path = get_include_path();
+include_once $include_path . '\includes\db_connect.php';
 
 function db_begin_transaction(){
    $mysql = db_connect();
@@ -40,7 +41,7 @@ function db_insert($query){
 
 function db_select($query){
     $rows = array();
-    $result = db_query_exception($query);
+    $result = db_query($query);
 
     while($row = mysqli_fetch_assoc($result)){
         $rows[] = $row;
